@@ -4,7 +4,7 @@ function App() {
   const [input, setInput] = useState("");
 
   const handleClick = (val) => {
-    setInput(input + val);
+    setInput((prev) => prev + val);
   };
 
   const clearInput = () => {
@@ -13,7 +13,8 @@ function App() {
 
   const calculate = () => {
     try {
-      const result = eval(input);
+      // simple safe eval fallback
+      const result = Function(`return ${input}`)();
       setInput(result.toString());
     } catch {
       setInput("Error");
@@ -21,48 +22,55 @@ function App() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-5 rounded-lg shadow-lg w-64">
-        <h2 className="text-center text-xl font-semibold mb-4">
-          React Calculator App
+    <div className="flex items-center justify-center min-h-screen bg-gray-200">
+
+      <div className="scale-[3] origin-center">
+        
+        <h2 className="text-center text-xl font-bold mb-3">
+          Calculator
         </h2>
 
-      <input
-  type="text"
-  value={input}
-  readOnly
-  placeholder="Enter calculation..."
-  className="w-full h-10 mb-4 text-right px-2 border rounded"
-/>
+        {/* Display */}
+        <input
+          type="text"
+          value={input}
+          readOnly
+          placeholder="0"
+          className="w-max-width h-10 mb-3 text-right px-2 border rounded"
+        />
 
+        {/* Buttons */}
         <div className="grid grid-cols-4 gap-2">
-          <button onClick={() => handleClick("7")} className="btn">7</button>
-          <button onClick={() => handleClick("8")} className="btn">8</button>
-          <button onClick={() => handleClick("9")} className="btn">9</button>
-          <button onClick={() => handleClick("/")} className="btn bg-orange-400">/</button>
+          
+          {/* Numbers */}
+          {[7,8,9].map(n => (
+            <button key={n} onClick={() => handleClick(n)} className="bg-gray-100 p-2 rounded">{n}</button>
+          ))}
+          <button onClick={() => handleClick("/")} className="bg-orange-300 p-2 rounded">/</button>
 
-          <button onClick={() => handleClick("4")} className="btn">4</button>
-          <button onClick={() => handleClick("5")} className="btn">5</button>
-          <button onClick={() => handleClick("6")} className="btn">6</button>
-          <button onClick={() => handleClick("*")} className="btn bg-orange-400">*</button>
+          {[4,5,6].map(n => (
+            <button key={n} onClick={() => handleClick(n)} className="bg-gray-100 p-2 rounded">{n}</button>
+          ))}
+          <button onClick={() => handleClick("*")} className="bg-orange-300 p-2 rounded">*</button>
 
-          <button onClick={() => handleClick("1")} className="btn">1</button>
-          <button onClick={() => handleClick("2")} className="btn">2</button>
-          <button onClick={() => handleClick("3")} className="btn">3</button>
-          <button onClick={() => handleClick("-")} className="btn bg-orange-400">-</button>
+          {[1,2,3].map(n => (
+            <button key={n} onClick={() => handleClick(n)} className="bg-gray-100 p-2 rounded">{n}</button>
+          ))}
+          <button onClick={() => handleClick("-")} className="bg-orange-300 p-2 rounded">-</button>
 
-          <button onClick={() => handleClick("0")} className="btn">0</button>
-          <button onClick={() => handleClick(".")} className="btn">.</button>
-          <button onClick={calculate} className="btn bg-green-400">=</button>
-          <button onClick={() => handleClick("+")} className="btn bg-orange-400">+</button>
+          <button onClick={() => handleClick("0")} className="bg-gray-100 p-2 rounded col-span-2">0</button>
+          <button onClick={() => handleClick(".")} className="bg-gray-100 p-2 rounded">.</button>
+          <button onClick={() => handleClick("+")} className="bg-orange-300 p-2 rounded">+</button>
+
+          {/* Actions */}
+          <button onClick={clearInput} className="bg-red-400 text-white p-2 rounded col-span-2">
+            Clear
+          </button>
+          <button onClick={calculate} className="bg-green-400 text-white p-2 rounded col-span-2">
+            =
+          </button>
+
         </div>
-
-        <button
-          onClick={clearInput}
-          className="w-full mt-3 bg-red-400 text-white py-1 rounded"
-        >
-          Clear
-        </button>
       </div>
     </div>
   );
