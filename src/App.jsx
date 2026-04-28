@@ -27,12 +27,13 @@ function App() {
           React Calculator App
         </h2>
 
-        <input
-          type="text"
-          value={input}
-          readOnly
-          className="w-full h-10 mb-4 text-right px-2 border rounded"
-        />
+      <input
+  type="text"
+  value={input}
+  readOnly
+  placeholder="Enter calculation..."
+  className="w-full h-10 mb-4 text-right px-2 border rounded"
+/>
 
         <div className="grid grid-cols-4 gap-2">
           <button onClick={() => handleClick("7")} className="btn">7</button>
