@@ -24,7 +24,7 @@ function App() {
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-5 rounded-lg shadow-lg w-64">
         <h2 className="text-center text-xl font-semibold mb-4">
-          Simple Calculator
+          React Calculator App
         </h2>
 
         <input
