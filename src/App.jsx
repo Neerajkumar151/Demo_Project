@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState([]);
+
   const handleClick = (val) => {
     setInput((prev) => prev + val);
   };
@@ -21,14 +22,28 @@ function App() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (!isNaN(e.key) || "+-*/.".includes(e.key)) {
+      handleClick(e.key);
+    } else if (e.key === "Enter") {
+      calculate();
+    } else if (e.key === "Backspace") {
+      setInput((prev) => prev.slice(0, -1));
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [input]);
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200">
       <div className="scale-[3] origin-center">
         <h2 className="text-center text-xl font-bold mb-3">
-          Simple Calculator
+          Smart Calculator
         </h2>
 
-        {/* Display */}
         <input
           type="text"
           value={input}
@@ -104,6 +119,7 @@ function App() {
             ))}
           </ul>
         </div>
+
       </div>
     </div>
   );
